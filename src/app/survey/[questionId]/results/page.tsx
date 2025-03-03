@@ -1,4 +1,4 @@
-import ResultsClient from "./ResultsClient";
+import ResultsClient from './ResultsClient';
 
 export default function ResultsPage() {
   return <ResultsClient />;

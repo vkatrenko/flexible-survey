@@ -1,17 +1,11 @@
-"use client";
+'use client';
 
-import { useSelector, useDispatch } from "react-redux";
-import { saveAnswer } from "@/redux/features/userAnswers/userAnswersSlice";
-import { selectAnswerByQuestionId } from "@/redux/features/userAnswers/userAnswerSelector";
-import { useRouter, useParams } from "next/navigation";
-import { RootState } from "@/redux/store";
-import questions from "@/data/questions.json";
+import { useParams, useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
 
-interface Question {
-  text: string;
-  options?: Record<string, string>;
-  default?: string;
-}
+import questions from '@/data/questions.json';
+import { selectAnswerByQuestionId } from '@/redux/features/userAnswers/userAnswerSelector';
+import { saveAnswer } from '@/redux/features/userAnswers/userAnswersSlice';
 
 export default function QuestionClient() {
   const dispatch = useDispatch();
@@ -26,9 +20,11 @@ export default function QuestionClient() {
   const handleAnswer = (option: string) => {
     dispatch(saveAnswer({ questionId, answer: option }));
 
-    const nextQuestionId = (question.options?.[option as keyof typeof question.options] as string | undefined) ?? ("default" in question ? question.default : undefined);
+    const nextQuestionId =
+      (question.options?.[option as keyof typeof question.options] as string | undefined) ??
+      ('default' in question ? question.default : undefined);
     if (!nextQuestionId) {
-      router.push("/survey/results");
+      router.push('/survey/results');
       return;
     }
 
@@ -38,18 +34,18 @@ export default function QuestionClient() {
   return (
     <div>
       <h1>{question.text}</h1>
-      <div style={{ display: "flex", gap: "10px" }}>
-        {Object.keys(question.options || {}).map((option) => (
+      <div style={{ display: 'flex', gap: '10px' }}>
+        {Object.keys(question.options || {}).map(option => (
           <button
             key={option}
             onClick={() => handleAnswer(option)}
             style={{
-              padding: "10px 20px",
-              borderRadius: "8px",
-              cursor: "pointer",
-              backgroundColor: selectedAnswer === option ? "blue" : "gray",
-              color: "white",
-              border: "none",
+              padding: '10px 20px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              backgroundColor: selectedAnswer === option ? 'blue' : 'gray',
+              color: 'white',
+              border: 'none',
             }}
           >
             {option}

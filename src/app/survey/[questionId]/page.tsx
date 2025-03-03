@@ -1,4 +1,4 @@
-import QuestionClient from "./QuestionClient";
+import QuestionClient from './QuestionClient';
 
 export async function generateStaticParams() {
   return [];

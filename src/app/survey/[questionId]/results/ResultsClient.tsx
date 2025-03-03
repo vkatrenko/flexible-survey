@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import questions from "@/data/questions.json";
+import { useSelector } from 'react-redux';
+
+import questions from '@/data/questions.json';
+import { RootState } from '@/redux/store';
 
 export default function ResultsClient() {
   const userAnswers = useSelector((state: RootState) => state.userAnswers.answers);
@@ -11,7 +12,7 @@ export default function ResultsClient() {
     return <p>Відповіді не знайдено. Можливо, ви ще не проходили опитування.</p>;
   }
 
-  console.log("ResultsClient: userAnswers is === ", userAnswers);
+  console.log('ResultsClient: userAnswers is === ', userAnswers);
 
   return (
     <div>

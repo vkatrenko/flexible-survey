@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserAnswersState {
   answers: Record<string, string>; // { questionId: answerValue }
@@ -10,14 +9,14 @@ const initialState: UserAnswersState = {
 };
 
 const userAnswersSlice = createSlice({
-  name: "userAnswers",
+  name: 'userAnswers',
   initialState,
   reducers: {
     saveAnswer: (state, action: PayloadAction<{ questionId: string; answer: string }>) => {
       const { questionId, answer } = action.payload;
       state.answers[questionId] = answer;
     },
-    resetAnswers: (state) => {
+    resetAnswers: state => {
       state.answers = {};
     },
   },
