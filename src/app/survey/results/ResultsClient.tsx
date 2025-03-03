@@ -8,7 +8,11 @@ import { RootState } from '@/redux/store';
 export default function ResultsClient() {
   const userAnswers = useSelector((state: RootState) => state.userAnswers.answers);
 
+  console.log('ResultsClient: Component rendered');
+  console.log('ResultsClient: Redux state:', userAnswers);
+
   if (!userAnswers || Object.keys(userAnswers).length === 0) {
+    console.log('ResultsClient: No answers found');
     return <p>Відповіді не знайдено. Можливо, ви ще не проходили опитування.</p>;
   }
 
