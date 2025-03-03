@@ -22,7 +22,7 @@ export default function QuestionClient() {
 
     const nextQuestionId =
       (question.options?.[option as keyof typeof question.options] as string | undefined) ??
-      ('default' in question ? question.default : undefined);
+      ('defaultAnswer' in question ? question.defaultAnswer : undefined);
     if (!nextQuestionId) {
       router.push('/survey/results');
       return;
@@ -50,22 +50,38 @@ export default function QuestionClient() {
 
       <h1>{question.text}</h1>
       <div style={{ display: 'flex', gap: '10px' }}>
-        {Object.keys(question.options || {}).map(option => (
+        {Object.keys(question.options || {}).length > 0 ? (
+          Object.keys(question.options).map(option => (
+            <button
+              key={option}
+              onClick={() => handleAnswer(option)}
+              style={{
+                padding: '10px 20px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                backgroundColor: selectedAnswer === option ? 'purple' : 'gray',
+                color: 'white',
+                border: 'none',
+              }}
+            >
+              {option}
+            </button>
+          ))
+        ) : (
           <button
-            key={option}
-            onClick={() => handleAnswer(option)}
+            onClick={() => handleAnswer('')}
             style={{
               padding: '10px 20px',
               borderRadius: '8px',
               cursor: 'pointer',
-              backgroundColor: selectedAnswer === option ? 'blue' : 'gray',
+              backgroundColor: 'gray',
               color: 'white',
               border: 'none',
             }}
           >
-            {option}
+            Next
           </button>
-        ))}
+        )}
       </div>
     </div>
   );
