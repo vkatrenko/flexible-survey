@@ -33,6 +33,21 @@ export default function QuestionClient() {
 
   return (
     <div>
+      <button
+        onClick={() => router.back()}
+        style={{
+          marginTop: '20px',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          backgroundColor: 'lightgray',
+          color: 'black',
+          border: 'none',
+        }}
+      >
+        {'<'}
+      </button>
+
       <h1>{question.text}</h1>
       <div style={{ display: 'flex', gap: '10px' }}>
         {Object.keys(question.options || {}).map(option => (
