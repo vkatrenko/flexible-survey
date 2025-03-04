@@ -20,6 +20,12 @@ interface UserAnswers {
   [key: string]: string; // Ключі - ідентифікатори питань, значення - відповіді
 }
 
+// Функція для форматування тексту
+const capitalizeFirstLetter = (text: string) => {
+  if (!text) return text; // Якщо текст порожній, повертаємо його
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); // Перша буква велика, решта маленькі
+};
+
 // Функція для підстановки значень у текст
 const resolvePlaceholders = (
   text: string,
@@ -62,6 +68,9 @@ export default function QuestionClient() {
     resolvedText = question.dependentPlaceholders
       ? resolvePlaceholders(question.text, question.dependentPlaceholders, userAnswers)
       : question.text;
+
+    // Форматуємо текст, щоб перша буква була великою
+    resolvedText = capitalizeFirstLetter(resolvedText);
   } catch {
     resolvedText = question.text; // Повертаємо текст без змін у разі помилки
   }
