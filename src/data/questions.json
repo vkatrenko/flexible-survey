@@ -34,7 +34,7 @@
     },
     "dependentPlaceholders": {
       "gender": "{q1}",
-      "who_have_children": "{q3}"
+      "who_have_children": "{q3} ? who have children"
     },
     "defaultAnswer": "q5",
     "type": "question"

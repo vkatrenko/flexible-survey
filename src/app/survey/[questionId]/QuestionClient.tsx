@@ -15,15 +15,56 @@ interface Question {
   dependentPlaceholders?: Record<string, string>;
 }
 
+// Визначення типу для userAnswers
+interface UserAnswers {
+  [key: string]: string; // Ключі - ідентифікатори питань, значення - відповіді
+}
+
+// Функція для підстановки значень у текст
+const resolvePlaceholders = (
+  text: string,
+  placeholders: Record<string, string>,
+  answers: UserAnswers,
+) => {
+  return text.replace(/\{(\w+)\}/g, (_, key) => {
+    const placeholderExpression = placeholders[key];
+    if (!placeholderExpression) return `{${key}}`;
+
+    // Перевіряємо, чи є умовний вираз
+    if (placeholderExpression.includes(' ? ')) {
+      const [questionKey, trueText] = placeholderExpression.split(' ? ');
+      const questionId = questionKey.replace(/[{}]/g, '');
+      const answer = answers[questionId];
+      return answer === 'Yes' ? trueText : '';
+    } else {
+      // Просте підставлення
+      const questionId = placeholderExpression.replace(/[{}]/g, '');
+      return answers[questionId] || `{${key}}`;
+    }
+  });
+};
+
 export default function QuestionClient() {
   const dispatch = useDispatch();
   const router = useRouter();
   const params = useParams();
   const questionId = params?.questionId as string;
   const question = questions[questionId as keyof typeof questions] as Question;
+  const userAnswers = useSelector(
+    (state: { userAnswers: { answers: UserAnswers } }) => state.userAnswers.answers,
+  );
   const selectedAnswer = useSelector(selectAnswerByQuestionId(questionId));
 
   if (!question) return <p>Питання не знайдено</p>;
+
+  let resolvedText: string;
+  try {
+    resolvedText = question.dependentPlaceholders
+      ? resolvePlaceholders(question.text, question.dependentPlaceholders, userAnswers)
+      : question.text;
+  } catch {
+    resolvedText = question.text; // Повертаємо текст без змін у разі помилки
+  }
 
   const handleAnswer = (option: string) => {
     dispatch(saveAnswer({ questionId, answer: option }));
@@ -39,9 +80,6 @@ export default function QuestionClient() {
     } else {
       nextQuestionId = question.options?.[option] || (question.defaultAnswer as string);
     }
-
-    console.log('Selected option:', option);
-    console.log('Next question ID:', nextQuestionId);
 
     if (!nextQuestionId) {
       router.push('/survey/results');
@@ -68,7 +106,7 @@ export default function QuestionClient() {
         {'<'}
       </button>
 
-      <h1>{question.text}</h1>
+      <h1>{resolvedText}</h1>
       <div style={{ display: 'flex', gap: '10px' }}>
         {question.type === 'screen' || Object.keys(question.options || {}).length === 0 ? (
           <button
