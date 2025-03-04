@@ -1,40 +1,165 @@
 {
   "q1": {
-    "text": "Are you a single parent?",
+    "text": "Select your gender:",
     "options": {
-      "Yes": "q2",
-      "No": "q3"
-    }
+      "Female": "",
+      "Male": ""
+    },
+    "defaultAnswer": "q2",
+    "type": "question"
   },
   "q2": {
-    "text": "Which statement best describes you?",
+    "text": "So we can get to know you better, tell us about your relationship status.",
     "options": {
-      "I'm very unhappy with how things are going in my relationship": "",
-      "I'm unhappy with parts of my relationship, but some things are working well": "",
-      "I'm generally happy in my relationship": ""
+      "Single": "q3",
+      "In a relationship": "q10"
     },
-    "defaultAnswer": ""
+    "type": "question"
   },
   "q3": {
-    "text": "Do you tend to overthink?",
+    "text": "Are you a single parent?",
     "options": {
-      "Yes": "q4",
-      "No": "q5"
-    }
+      "Yes": "",
+      "No": ""
+    },
+    "defaultAnswer": "q4",
+    "type": "question"
   },
   "q4": {
-    "text": "Screen",
-    "options": {},
-    "defaultAnswer": "q5"
+    "text": "Single {gender} {who_have_children} need a slightly different approach to improve their relationship. Which statement best describes you?",
+    "options": {
+      "I’m very unhappy with how things are going in my relationship": "",
+      "I’m unhappy with parts of my relationship, but some things are working well": "",
+      "I’m generally happy in my relationship": ""
+    },
+    "dependentPlaceholders": {
+      "gender": "{q1}",
+      "who_have_children": "{q3}"
+    },
+    "defaultAnswer": "q5",
+    "type": "question"
   },
   "q5": {
+    "text": "Do you tend to overthink?",
+    "options": {
+      "Yes": "q7",
+      "No": "q9"
+    },
+    "type": "question"
+  },
+  "q6": {
+    "text": "So how does it work? We analyze hundreds of data points to create your unique astrological blueprint. This is combined with AI to tailor-make your astrological insights, based on your answers. We’re going to change your relationship with astrology.",
+    "type": "screen",
+    "defaultAnswer": "{q5}"
+  },
+  "q7": {
     "text": "What is most important to you?",
     "options": {
-      "Success": "",
       "Romance": "",
+      "Freedom": "",
       "Stability": "",
-      "Freedom": ""
+      "Success": ""
     },
-    "defaultAnswer": ""
+    "defaultAnswer": "q8",
+    "type": "question"
+  },
+  "q8": {
+    "text": "Where did you hear about us?",
+    "options": {
+      "Poster or Billboard": "",
+      "Friend or Family": "",
+      "Instagram": "",
+      "Direct Mail or Package Insert": "",
+      "Online TV or Streaming TV": "",
+      "TV": "",
+      "Radio": "",
+      "Search Engine (Google, Bing, etc.)": "",
+      "Newspaper or Magazine": "",
+      "Facebook": "",
+      "Blog Post or Website Review": "",
+      "Podcast": "",
+      "Influencer": "",
+      "Youtube": "",
+      "Pinterest": "",
+      "Other": ""
+    },
+    "defaultAnswer": "",
+    "type": "question"
+  },
+  "q9": {
+    "text": "Is emotional control tricky for you?",
+    "options": {
+      "Yes": "",
+      "Sometimes": "",
+      "Rarely": "",
+      "Not at all": ""
+    },
+    "defaultAnswer": "q8",
+    "type": "question"
+  },
+  "q10": {
+    "text": "Are you a parent?",
+    "options": {
+      "Yes": "",
+      "No": ""
+    },
+    "defaultAnswer": "q11",
+    "type": "question"
+  },
+  "q11": {
+    "text": "{Gender} {who_have_children} need a slightly different approach to find their perfect partner. But first, how did you feel in your last relationship?",
+    "options": {
+      "I was unhappy with how things were going in my relationship": "",
+      "I was unhappy with parts of my relationship, but some things were working": "",
+      "I was generally happy with my relationship": "",
+      "I’ve never been in a relationship": ""
+    },
+    "dependentPlaceholders": {
+      "gender": "{q1}",
+      "who_have_children": "{q10}"
+    },
+    "defaultAnswer": "q12",
+    "type": "question"
+  },
+  "q12": {
+    "text": "Is your partner an introvert or extrovert?",
+    "options": {
+      "Introvert": "",
+      "Extrovert": "",
+      "A bit of both": ""
+    },
+    "defaultAnswer": "q13",
+    "type": "question"
+  },
+  "q13": {
+    "text": "What is your partner’s gender?",
+    "options": {
+      "Male": "",
+      "Female": ""
+    },
+    "defaultAnswer": "q14",
+    "type": "question"
+  },
+  "q14": {
+    "text": "Do you agree with the statement below? 'My partner and I make sex a priority in our relationship'",
+    "options": {
+      "Strongly agree": "",
+      "Agree": "",
+      "Neutral": "",
+      "Disagree": "",
+      "Strongly disagree": ""
+    },
+    "defaultAnswer": "q15",
+    "type": "question"
+  },
+  "q15": {
+    "text": "When you think about your relationship goals, you feel...?",
+    "options": {
+      "Optimistic! They are totally doable, with some guidance.": "",
+      "Cautious. I’ve struggled before, but I’m hopeful.": "",
+      "I’m feeling a little anxious, honestly.": ""
+    },
+    "defaultAnswer": "q8",
+    "type": "question"
   }
 }
