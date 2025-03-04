@@ -42,15 +42,16 @@
   "q5": {
     "text": "Do you tend to overthink?",
     "options": {
-      "Yes": "q7",
-      "No": "q9"
+      "Yes": "",
+      "No": ""
     },
+    "defaultAnswer": "q6",
     "type": "question"
   },
   "q6": {
     "text": "So how does it work? We analyze hundreds of data points to create your unique astrological blueprint. This is combined with AI to tailor-make your astrological insights, based on your answers. We’re going to change your relationship with astrology.",
     "type": "screen",
-    "defaultAnswer": "{q5}"
+    "defaultAnswer": "{q5} ? q7 : q9"
   },
   "q7": {
     "text": "What is most important to you?",

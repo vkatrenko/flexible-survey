@@ -48,6 +48,19 @@ const resolvePlaceholders = (
   });
 };
 
+// Обробляє умовний вираз у defaultAnswer
+const resolveDefaultAnswer = (
+  defaultAnswer: string,
+  userAnswers: UserAnswers,
+): string | undefined => {
+  const match = defaultAnswer.match(/^\{(\w+)\} \? (\w+) : (\w+)$/);
+  if (match) {
+    const [, questionId, trueValue, falseValue] = match;
+    return userAnswers[questionId] === 'Yes' ? trueValue : falseValue;
+  }
+  return defaultAnswer;
+};
+
 export default function QuestionClient() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -77,12 +90,8 @@ export default function QuestionClient() {
 
     let nextQuestionId: string | undefined;
 
-    if (question.type === 'screen') {
-      nextQuestionId = question.defaultAnswer
-        ? typeof question.defaultAnswer === 'string'
-          ? question.defaultAnswer
-          : question.defaultAnswer[option]
-        : undefined;
+    if (question.type === 'screen' && question.defaultAnswer) {
+      nextQuestionId = resolveDefaultAnswer(question.defaultAnswer, userAnswers);
     } else {
       nextQuestionId = question.options?.[option] || (question.defaultAnswer as string);
     }
