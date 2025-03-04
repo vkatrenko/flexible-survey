@@ -7,12 +7,20 @@ import questions from '@/data/questions.json';
 import { selectAnswerByQuestionId } from '@/redux/features/userAnswers/userAnswerSelector';
 import { saveAnswer } from '@/redux/features/userAnswers/userAnswersSlice';
 
+interface Question {
+  text: string;
+  options?: Record<string, string>;
+  type: 'question' | 'screen';
+  defaultAnswer?: string | Record<string, string>;
+  dependentPlaceholders?: Record<string, string>;
+}
+
 export default function QuestionClient() {
   const dispatch = useDispatch();
   const router = useRouter();
   const params = useParams();
   const questionId = params?.questionId as string;
-  const question = questions[questionId as keyof typeof questions];
+  const question = questions[questionId as keyof typeof questions] as Question;
   const selectedAnswer = useSelector(selectAnswerByQuestionId(questionId));
 
   if (!question) return <p>Питання не знайдено</p>;
@@ -20,9 +28,21 @@ export default function QuestionClient() {
   const handleAnswer = (option: string) => {
     dispatch(saveAnswer({ questionId, answer: option }));
 
-    const nextQuestionId =
-      (question.options?.[option as keyof typeof question.options] as string | undefined) ??
-      ('defaultAnswer' in question ? question.defaultAnswer : undefined);
+    let nextQuestionId: string | undefined;
+
+    if (question.type === 'screen') {
+      nextQuestionId = question.defaultAnswer
+        ? typeof question.defaultAnswer === 'string'
+          ? question.defaultAnswer
+          : question.defaultAnswer[option]
+        : undefined;
+    } else {
+      nextQuestionId = question.options?.[option] || (question.defaultAnswer as string);
+    }
+
+    console.log('Selected option:', option);
+    console.log('Next question ID:', nextQuestionId);
+
     if (!nextQuestionId) {
       router.push('/survey/results');
       return;
@@ -50,8 +70,22 @@ export default function QuestionClient() {
 
       <h1>{question.text}</h1>
       <div style={{ display: 'flex', gap: '10px' }}>
-        {Object.keys(question.options || {}).length > 0 ? (
-          Object.keys(question.options).map(option => (
+        {question.type === 'screen' || Object.keys(question.options || {}).length === 0 ? (
+          <button
+            onClick={() => handleAnswer('')}
+            style={{
+              padding: '10px 20px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              backgroundColor: 'gray',
+              color: 'white',
+              border: 'none',
+            }}
+          >
+            Next
+          </button>
+        ) : (
+          Object.keys(question.options || {}).map(option => (
             <button
               key={option}
               onClick={() => handleAnswer(option)}
@@ -67,20 +101,6 @@ export default function QuestionClient() {
               {option}
             </button>
           ))
-        ) : (
-          <button
-            onClick={() => handleAnswer('')}
-            style={{
-              padding: '10px 20px',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              backgroundColor: 'gray',
-              color: 'white',
-              border: 'none',
-            }}
-          >
-            Next
-          </button>
         )}
       </div>
     </div>
