@@ -3,6 +3,7 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
+import QuestionUI from '@/app/components/ui/QuestionUI';
 import questions from '@/data/questions.json';
 import { selectAnswerByQuestionId } from '@/redux/features/userAnswers/userAnswerSelector';
 import { saveAnswer } from '@/redux/features/userAnswers/userAnswersSlice';
@@ -70,7 +71,7 @@ export default function QuestionClient() {
   const userAnswers = useSelector(
     (state: { userAnswers: { answers: UserAnswers } }) => state.userAnswers.answers,
   );
-  const selectedAnswer = useSelector(selectAnswerByQuestionId(questionId));
+  const selectedAnswer = useSelector(selectAnswerByQuestionId(questionId)) || undefined;
 
   if (!question) return <p>Питання не знайдено</p>;
 
@@ -105,57 +106,12 @@ export default function QuestionClient() {
   };
 
   return (
-    <div>
-      <button
-        onClick={() => router.back()}
-        style={{
-          marginTop: '20px',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          backgroundColor: 'lightgray',
-          color: 'black',
-          border: 'none',
-        }}
-      >
-        {'<'}
-      </button>
-
-      <h1>{resolvedText}</h1>
-      <div style={{ display: 'flex', gap: '10px' }}>
-        {question.type === 'screen' || Object.keys(question.options || {}).length === 0 ? (
-          <button
-            onClick={() => handleAnswer('')}
-            style={{
-              padding: '10px 20px',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              backgroundColor: 'gray',
-              color: 'white',
-              border: 'none',
-            }}
-          >
-            Next
-          </button>
-        ) : (
-          Object.keys(question.options || {}).map(option => (
-            <button
-              key={option}
-              onClick={() => handleAnswer(option)}
-              style={{
-                padding: '10px 20px',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                backgroundColor: selectedAnswer === option ? 'purple' : 'gray',
-                color: 'white',
-                border: 'none',
-              }}
-            >
-              {option}
-            </button>
-          ))
-        )}
-      </div>
-    </div>
+    <QuestionUI
+      onAnswer={handleAnswer}
+      options={question.options}
+      questionText={resolvedText}
+      selectedAnswer={selectedAnswer}
+      variant={question.type === 'screen' ? 'dark' : 'light'}
+    />
   );
 }

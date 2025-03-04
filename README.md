@@ -1,36 +1,231 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flexible Survey
 
-## Getting Started
+## Опис
 
-First, run the development server:
+Flexible Survey — це проект, що дозволяє створювати та проходити опитування з гнучкими налаштуваннями.
+
+## Встановлення
+
+Щоб встановити проект, виконайте наступні кроки:
+
+# Start Generation Here
+
+## Перевірка встановлення Git, Node.js та npm
+
+Перед тим, як почати, переконайтеся, що у вас встановлені Git, Node.js та npm. Ви можете перевірити їх наявність, виконавши наступні команди в терміналі:
+
+1. **Перевірка Git**
+
+   ```bash
+   git --version
+   ```
+
+   Якщо Git встановлений, ви побачите версію Git. Якщо ні, вам потрібно буде його встановити.
+
+2. **Перевірка Node.js**
+
+   ```bash
+   node --version
+   ```
+
+   Ця команда покаже версію Node.js, якщо він встановлений. Якщо ви отримали повідомлення про помилку, Node.js не встановлений.
+
+3. **Перевірка npm**
+   ```bash
+   npm --version
+   ```
+   Виконавши цю команду, ви побачите версію npm. Якщо npm не встановлений, вам потрібно буде його інсталювати разом з Node.js.
+
+Якщо всі три компоненти встановлені, ви готові продовжити з установкою проекту.
+
+# End Generation Here
+
+1. **Клонування репозиторію**
+
+   ```bash
+   git clone https://github.com/vkatrenko/flexible-survey.git
+   ```
+
+2. **Перехід до каталогу проекту**
+
+   ```bash
+   cd flexible-survey
+   ```
+
+3. **Встановлення залежностей**
+   Використовуйте npm або yarn для встановлення залежностей:
+
+   ```bash
+   npm install
+   ```
+
+   або
+
+   ```bash
+   yarn install
+   ```
+
+4. **Запуск проекту в режимі розробки**
+   Для запуску проекту в режимі розробки використовуйте:
+
+   ```bash
+   npm run dev
+   ```
+
+   або
+
+   ```bash
+   yarn dev
+   ```
+
+5. **Відкриття в браузері**
+   Відкрийте ваш браузер і перейдіть за адресою [http://localhost:3000](http://localhost:3000), щоб переглянути проект.
+
+## Скрипти
+
+- `dev`: Запускає проект в режимі розробки з використанням Turbopack.
+- `build`: Створює оптимізовану версію проекту для продакшн.
+- `start`: Запускає продакшн-версію проекту.
+- `lint`: Перевіряє код на наявність помилок за допомогою ESLint.
+- `prepare`: Налаштовує Husky для управління хуками Git.
+
+## Лінтинг та форматування
+
+Проект використовує ESLint та Prettier для перевірки та форматування коду. Ви можете автоматично виправити помилки, запустивши:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## JSON Конфігурація: Flexible Survey
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Цей JSON-конф містить всі налаштування та логіку для нашого динамічного опитувальника, де питання, відповіді, а також переходи між питаннями визначаються на основі вибору користувача. Конфігурація є гнучкою і дозволяє змінювати умови переходів, використовувати динамічні значення, а також застосовувати різні типи питань.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Загальна структура JSON**
 
-## Learn More
+Конфігурація містить список питань. Кожне питання визначене як об'єкт з наступними ключами:
 
-To learn more about Next.js, take a look at the following resources:
+- `questionId` — унікальний ідентифікатор для питання.
+- `text` — текст питання, який відображається на екрані.
+- `options` (необов'язкове) — об'єкт з варіантами відповідей.
+- `defaultAnswer` (необов'язкове) — використовується для визначення наступного питання, якщо варіанти відповідей відсутні. Може бути також динамічним через placeholder-значення.
+- `type` — визначає тип питання. Доступні типи:
+  - `"question"` — стандартне питання з варіантами відповідей.
+  - `"screen"` — інформаційний екран без варіантів відповідей (відображається кнопка Next).
+- `dependentPlaceholders` (необов'язкове) — об'єкт для визначення динамічних значень у питаннях, що залежать від попередніх відповідей.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Параметри для кожного питання**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **text**
 
-## Deploy on Vercel
+  - Тип: string
+  - Опис: Текст питання, який буде відображений на сторінці. Це може бути звичайне питання або інструкція.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **options**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  - Тип: об'єкт
+  - Опис: Словник, де ключ — це варіант відповіді, а значення — це `questionId` наступного питання або `defaultAnswer`. Наприклад:
+    ```json
+    "Yes": "q7",
+    "No": "q9"
+    ```
+
+- **defaultAnswer**
+
+  - Тип: string | об'єкт
+  - Опис: Якщо немає визначених варіантів у `options`, то наступне питання визначається через `defaultAnswer`. Це може бути або статичний ID питання (наприклад "q4"), або динамічне значення, яке змінюється в залежності від попередньої відповіді:
+    ```json
+    "defaultAnswer": "{q5}"
+    ```
+    Де `{q5}` — це placeholder для значення з іншого питання.
+
+- **type**
+
+  - Тип: string
+  - Опис: Тип питання. Може бути:
+    - `"question"` — стандартне питання з варіантами відповідей.
+    - `"screen"` — інформаційний екран без варіантів відповідей, на якому буде лише кнопка "Next" для переходу до наступного питання.
+
+- **dependentPlaceholders**
+  - Тип: об'єкт
+  - Опис: Використовується для визначення значень, що залежать від попередніх відповідей. Наприклад:
+    ```json
+    "dependentPlaceholders": {
+      "gender": "{q1}"
+    }
+    ```
+    Це означає, що значення `gender` буде взято з відповіді на питання `q3`.
+
+3. **Приклад конфігурації**
+   {
+   "q2": {
+   "text": "Select your gender:",
+   "options": {
+   "Female": "",
+   "Male": ""
+   },
+   "defaultAnswer": "q3",
+   "type": "question"
+   },
+   "q3": {
+   "text": "Are you a single parent?",
+   "options": {
+   "Yes": "q4",
+   "No": "q5"
+   },
+   "type": "question"
+   },
+   "q4": {
+   "text": "Single {gender} parents need a slightly different approach.",
+   "dependentPlaceholders": {
+   "gender": "{q2}"
+   },
+   "defaultAnswer": "q6",
+   "type": "screen"
+   },
+   "q5": {
+   "text": "Some general questions for you.",
+   "options": {
+   "Agree": "q6",
+   "Disagree": "q7"
+   },
+   "type": "question"
+   },
+   "q6": {
+   "text": "Thanks for completing the survey!",
+   "type": "screen"
+   }
+   }
+
+4. Особливості та зауваження
+
+- **Dynamic Answer Handling**: Якщо потрібно, щоб значення в питанні залежало від попередніх відповідей, це можна реалізувати через `dependentPlaceholders`, як показано в прикладі з `gender`. Замість хардкодингу конкретного значення, можна вставити placeholder, який буде замінений на значення з іншого питання.
+
+- **Перехід без варіантів (для типу screen)**: Для питань типу "screen", де немає варіантів відповідей, рендериться лише кнопка "Next", яка автоматично переміщає користувача до наступного питання. Це особливо корисно для інформаційних екранів.
+
+- **defaultAnswer і автоматичний перехід**: Якщо у питання немає варіантів відповідей або вони не призводять до іншого питання, можна визначити `defaultAnswer`, яке вказує на наступне питання за замовчуванням. А якщо не маю відповідей і та `defaultAnswer` -- це означає кінець опитувльника.
+
+- **Обробка відсутніх варіантів відповідей**: Якщо варіанти відповідей відсутні, то автоматично рендериться кнопка "Next", яка забезпечує перехід до наступного питання.
+
+Якщо все зрозуміло і немає додаткових питань, ми можемо закріпити цю структуру як основу для конфігурації опитувальника.
+
+JSDoc
+
+/\*\*
+
+- Конфігурація питань для опитування
+- @typedef {Object} Question
+- @property {string} text - Текст питання.
+- @property {Object<string, string>} [options] - Варіанти відповідей.
+- @property {string} [defaultAnswer] - Значення за замовчуванням для переходу до наступного питання або екрану.
+- @property {string} [type] - Тип питання (наприклад, "screen", "question").
+- @property {Object<string, string>} [dependentPlaceholders] - Змінні, які залежать від попередніх відповідей (наприклад, "{q5}", "{gender}").
+-
+- Заміна на посилання на інше питання [defaultAnswer] && [type] || [dependentPlaceholders] ||
+- `{q1}` - посилання на відповідь з іншого питання, де `q1` є ідентифікатором питання.
+- Використовується для динамічного оновлення значень у залежності від відповідей на попередні питання.
+- @typedef {Record<string, Question>} SurveyConfig
+-
+- Конфігурація опитування
+- @type {SurveyConfig}
+  \*/

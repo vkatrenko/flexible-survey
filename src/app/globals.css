@@ -6,19 +6,24 @@
 }
 
 :root {
-  --background: #ffffff;
+  --background: #f0f0f0;
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #f0f0f0;
+    --foreground: #171717;
   }
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--background) !important;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn-survey {
+  @apply mt-4 rounded-full border border-transparent transition-colors flex items-center justify-center bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-blue-600 hover:to-green-600 shadow-lg text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5;
+  background-color: #4caf50;
 }
