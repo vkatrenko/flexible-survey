@@ -11,22 +11,22 @@ interface Question {
   text: string;
   options?: Record<string, string>;
   type: 'question' | 'screen';
-  defaultAnswer?: string | Record<string, string>;
+  defaultAnswer?: string;
   dependentPlaceholders?: Record<string, string>;
 }
 
 // Визначення типу для userAnswers
 interface UserAnswers {
-  [key: string]: string; // Ключі - ідентифікатори питань, значення - відповіді
+  [key: string]: string;
 }
 
-// Функція для форматування тексту
+// Форматує першу літеру рядка у верхній регістр
 const capitalizeFirstLetter = (text: string) => {
-  if (!text) return text; // Якщо текст порожній, повертаємо його
-  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); // Перша буква велика, решта маленькі
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 };
 
-// Функція для підстановки значень у текст
+// Підставляє значення в текст з плейсхолдерів
 const resolvePlaceholders = (
   text: string,
   placeholders: Record<string, string>,
@@ -36,14 +36,12 @@ const resolvePlaceholders = (
     const placeholderExpression = placeholders[key];
     if (!placeholderExpression) return `{${key}}`;
 
-    // Перевіряємо, чи є умовний вираз
     if (placeholderExpression.includes(' ? ')) {
       const [questionKey, trueText] = placeholderExpression.split(' ? ');
       const questionId = questionKey.replace(/[{}]/g, '');
       const answer = answers[questionId];
       return answer === 'Yes' ? trueText : '';
     } else {
-      // Просте підставлення
       const questionId = placeholderExpression.replace(/[{}]/g, '');
       return answers[questionId] || `{${key}}`;
     }
@@ -69,10 +67,9 @@ export default function QuestionClient() {
       ? resolvePlaceholders(question.text, question.dependentPlaceholders, userAnswers)
       : question.text;
 
-    // Форматуємо текст, щоб перша буква була великою
     resolvedText = capitalizeFirstLetter(resolvedText);
   } catch {
-    resolvedText = question.text; // Повертаємо текст без змін у разі помилки
+    resolvedText = question.text;
   }
 
   const handleAnswer = (option: string) => {
