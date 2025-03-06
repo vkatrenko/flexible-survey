@@ -32,7 +32,7 @@ export default function ResultsClient() {
       </ul>
       <p style={{ paddingLeft: '16.67%' }}>
         <Link href="/survey/q1" style={{ color: 'blue', textDecoration: 'underline' }}>
-          Пройти ще раз
+          Start a new survey
         </Link>
       </p>
     </div>

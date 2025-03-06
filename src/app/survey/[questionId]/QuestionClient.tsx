@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,18 +17,15 @@ interface Question {
   dependentPlaceholders?: Record<string, string>;
 }
 
-// Визначення типу для userAnswers
 interface UserAnswers {
   [key: string]: string;
 }
 
-// Форматує першу літеру рядка у верхній регістр
 const capitalizeFirstLetter = (text: string) => {
   if (!text) return text;
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 };
 
-// Підставляє значення в текст з плейсхолдерів
 const resolvePlaceholders = (
   text: string,
   placeholders: Record<string, string>,
@@ -73,7 +71,25 @@ export default function QuestionClient() {
   );
   const selectedAnswer = useSelector(selectAnswerByQuestionId(questionId)) || undefined;
 
-  if (!question) return <p>Питання не знайдено</p>;
+  if (!question)
+    return (
+      <section
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <h1>Question not found</h1>
+        <div style={{ marginTop: '16px' }}>
+          <Link href="/survey/q1" style={{ color: 'blue', textDecoration: 'underline' }}>
+            Start the survey
+          </Link>
+        </div>
+      </section>
+    );
 
   let resolvedText: string;
   try {

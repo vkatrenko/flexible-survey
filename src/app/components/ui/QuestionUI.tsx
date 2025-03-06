@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import styled, { ThemeProvider } from 'styled-components';
 
 interface ButtonProps {
   text: string;
@@ -20,118 +19,74 @@ interface QuestionUIProps {
 
 const theme = {
   light: {
-    background: '#FFF0F0',
-    text: '#1A1A1A',
+    background: 'bg-[#FFF0F0]',
+    text: 'text-[#1A1A1A]',
     logo: '/logo_black.svg',
-    buttonBg: '#EAEEF7',
-    buttonText: '#1A1A1A',
-    buttonBorder: '#E6E6E6',
+    buttonBg: 'bg-[#EAEEF7]',
+    buttonText: 'text-[#1A1A1A]',
+    buttonBorder: 'border-[#E6E6E6]',
+    chevron: '/chevron.svg',
   },
   dark: {
-    background:
-      'linear-gradient(165.54deg, #141333 -33.39%, #202261 15.89%, #543C97 55.84%, #6939A2 74.96%)',
-    text: '#FBFBFF',
-    logo: '/logo_black.svg',
-    buttonBg: 'linear-gradient(to right, #141333, #202261, #6939A2)',
-    buttonText: '#FFFFFF',
-    buttonBorder: 'transparent',
+    background: 'bg-gradient-to-b from-[#141333] via-[#202261] to-[#6939A2]',
+    text: 'text-[#FBFBFF]',
+    logo: '/logo_white.svg',
+    buttonBg: 'bg-gradient-to-r from-[#141333] via-[#202261] to-[#6939A2]',
+    buttonText: 'text-white',
+    buttonBorder: 'border-transparent',
+    chevron: '/chevron_white.svg',
   },
 };
-
-// Styled Components
-const Section = styled.div`
-  background: ${({ theme }) => theme.background};
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  padding-top: 25px;
-`;
-
-const LogoContainer = styled.div`
-  margin-bottom: 25px;
-`;
-
-const HeaderContainer = styled.header`
-  position: absolute;
-  top: 4px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  padding-left: 16px;
-`;
-
-const BackButton = styled.button`
-  width: 16.67%;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ContentContainer = styled.div`
-  width: 295px;
-  flex-direction: column;
-  text-align: left;
-`;
-
-const Title = styled.h1`
-  font-size: 24px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.text};
-  line-height: 1.2;
-`;
-
-const OptionButton = styled.button<ButtonProps>`
-  width: 295px;
-  height: 64px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: normal;
-  border: 1px solid ${({ theme }) => theme.buttonBorder};
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
-  color: ${({ selected, theme }) => (selected ? '#FFFFFF' : theme.buttonText)};
-  background: ${({ selected, theme }) =>
-    selected
-      ? theme.variant === 'dark'
-        ? 'linear-gradient(to bottom, #6A5ACD, #4B0082)'
-        : 'purple'
-      : theme.variant === 'dark'
-        ? '#4B0082'
-        : theme.buttonBg};
-`;
 
 const OptionButtonComponent: React.FC<ButtonProps> = ({ text, selected, onClick }) => {
   return (
-    <OptionButton
+    <button
+      className={`w-full h-16 rounded-xl text-base font-normal transition-all duration-300 
+        ${
+          selected
+            ? 'text-white bg-[linear-gradient(165.54deg,_#141333_-33.39%,_#202261_15.89%,_#543C97_55.84%,_#6939A2_74.96%)] border-[#E0E0E0]'
+            : 'text-[#1A1A1A] bg-[#EAEEF7] border-[#E0E0E0]'
+        }
+        py-3 px-4 font-normal text-[14px] leading-[19.6px] cursor-pointer
+      `}
       onClick={onClick}
-      style={{ backgroundColor: selected ? 'purple' : 'gray' }}
-      text={text}
+      style={{
+        boxShadow: selected
+          ? '2px 2px 6px rgba(84, 60, 151, 0.25)'
+          : '2px 2px 6px rgba(84, 60, 151, 0.25)', // Apply same shadow for both states
+      }}
     >
       {text}
-    </OptionButton>
+    </button>
   );
 };
 
-const Header = ({ onBack }: { onBack: () => void }) => (
-  <HeaderContainer>
-    <BackButton onClick={onBack}>
-      <Image alt="Back" height={24} src="/chevron.png" width={24} />
-    </BackButton>
-  </HeaderContainer>
+const Header = ({ onBack, variant }: { onBack: () => void; variant: 'light' | 'dark' }) => (
+  <header className="w-full flex h-[54px] justify-center items-center relative">
+    <button
+      className="absolute left-[0] bg-transparent border-none cursor-pointer"
+      onClick={onBack}
+    >
+      <Image
+        alt="Back"
+        height={24}
+        src={theme?.[variant]?.chevron ?? '/chevron_white.svg'}
+        width={24}
+      />
+    </button>
+    <Logo variant={variant} />
+  </header>
 );
 
-const Logo = ({ variant }: { variant: 'light' | 'dark' }) => (
-  <LogoContainer>
-    <Image alt="Logo" height={24} priority src={theme[variant].logo} width={24} />
-  </LogoContainer>
-);
+const Logo = ({ variant }: { variant: 'light' | 'dark' }) => {
+  const logoSrc = theme?.[variant]?.logo ?? '/fallback-logo.png';
+
+  return (
+    <div>
+      <Image alt="Logo" height={24} priority src={logoSrc} width={24} />
+    </div>
+  );
+};
 
 const QuestionUI: React.FC<QuestionUIProps> = ({
   variant,
@@ -143,31 +98,30 @@ const QuestionUI: React.FC<QuestionUIProps> = ({
   const router = useRouter();
 
   return (
-    <ThemeProvider theme={theme[variant]}>
-      <Section>
-        <Logo variant={variant} />
-        <Header onBack={() => router.back()} />
+    <div
+      className={`${theme[variant].background} min-h-screen flex flex-col items-center justify-start gap-5 px-[15px] lg:px-[165px] py-4`}
+    >
+      <Header onBack={() => router.back()} variant={variant} />
 
-        <ContentContainer>
-          <Title>{questionText}</Title>
+      <div className="flex flex-col w-[330px] text-left gap-7">
+        <h1 className={`text-2xl font-bold leading-snug ${theme[variant].text}`}>{questionText}</h1>
 
-          <div className="flex flex-col gap-4 mt-4">
-            {options && Object.keys(options).length > 0 ? (
-              Object.keys(options).map(option => (
-                <OptionButtonComponent
-                  key={option}
-                  onClick={() => onAnswer(option)}
-                  selected={selectedAnswer === option}
-                  text={option}
-                />
-              ))
-            ) : (
-              <OptionButtonComponent onClick={() => onAnswer('')} selected={false} text="Next" />
-            )}
-          </div>
-        </ContentContainer>
-      </Section>
-    </ThemeProvider>
+        <div className="flex flex-col gap-2.5">
+          {options && Object.keys(options).length > 0 ? (
+            Object.keys(options).map(option => (
+              <OptionButtonComponent
+                key={option}
+                onClick={() => onAnswer(option)}
+                selected={selectedAnswer === option}
+                text={option}
+              />
+            ))
+          ) : (
+            <OptionButtonComponent onClick={() => onAnswer('')} selected={false} text="Next" />
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

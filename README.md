@@ -8,7 +8,6 @@ Flexible Survey — це проект, що дозволяє створюват�
 
 Щоб встановити проект, виконайте наступні кроки:
 
-# Start Generation Here
 
 ## Перевірка встановлення Git, Node.js та npm
 
@@ -155,45 +154,47 @@ npm run lint
     Це означає, що значення `gender` буде взято з відповіді на питання `q3`.
 
 3. **Приклад конфігурації**
-   {
-   "q2": {
-   "text": "Select your gender:",
-   "options": {
-   "Female": "",
-   "Male": ""
-   },
-   "defaultAnswer": "q3",
-   "type": "question"
-   },
-   "q3": {
-   "text": "Are you a single parent?",
-   "options": {
-   "Yes": "q4",
-   "No": "q5"
-   },
-   "type": "question"
-   },
-   "q4": {
-   "text": "Single {gender} parents need a slightly different approach.",
-   "dependentPlaceholders": {
-   "gender": "{q2}"
-   },
-   "defaultAnswer": "q6",
-   "type": "screen"
-   },
-   "q5": {
-   "text": "Some general questions for you.",
-   "options": {
-   "Agree": "q6",
-   "Disagree": "q7"
-   },
-   "type": "question"
-   },
-   "q6": {
-   "text": "Thanks for completing the survey!",
-   "type": "screen"
-   }
-   }
+    ```json
+    {
+        "q2": {
+            "text": "Select your gender:",
+            "options": {
+                "Female": "",
+                "Male": ""
+            },
+            "defaultAnswer": "q3",
+            "type": "question"
+        },
+        "q3": {
+            "text": "Are you a single parent?",
+            "options": {
+                "Yes": "q4",
+                "No": "q5"
+            },
+            "type": "question"
+        },
+        "q4": {
+            "text": "Single {gender} parents need a slightly different approach.",
+            "dependentPlaceholders": {
+                "gender": "{q2}"
+            },
+            "defaultAnswer": "q6",
+            "type": "screen"
+        },
+        "q5": {
+            "text": "Some general questions for you.",
+            "options": {
+                "Agree": "q6",
+                "Disagree": "q7"
+            },
+            "type": "question"
+        },
+        "q6": {
+            "text": "Thanks for completing the survey!",
+            "type": "screen"
+        }
+    }
+    ```
 
 4. Особливості та зауваження
 
